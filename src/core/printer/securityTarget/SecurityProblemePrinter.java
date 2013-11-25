@@ -127,7 +127,7 @@ public class SecurityProblemePrinter {
 
 
 
-		private void addAssetSectionTitle(Asset asset) {
+		private void addAssetSectionTitle(Asset asset) throws Exception {
 			result.addSection(getAssetTitleLine(asset));
 		}
 		protected String getAssetTitleLine(Asset asset) {
@@ -135,7 +135,7 @@ public class SecurityProblemePrinter {
 		}
 		
 		protected BasicElement getAssetProtectionLine(Asset asset) throws Exception {
-			BasicElement result = new Sequence(); 
+			Sequence result = new Sequence(); 
 			if (asset.getListOfSecurityNeed().isEmpty()){
 				return new WarningText("New security need defined for that asset");
 			} else {
