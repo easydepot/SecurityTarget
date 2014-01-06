@@ -63,7 +63,7 @@ public class SecurityTargetChecker {
 		if (asset.getDescription()==null ){
 			throw new Exception("Asset A." + asset.getName() + " is not described");
 		}
-		if (asset.getDescription()=="" ){
+		if (asset.getDescription().isEmpty() ){
 			throw new Exception("Asset A." + asset.getName() + " is empty");
 		}
 	}

@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import core.RiskAnalysisObject;
 import core.asset.Asset;
 import core.asset.CCAsset;
+import core.cc.Hypothesis;
 import core.cc.OSP;
 import core.cc.SecurityTarget;
 import core.printer.CoverageTablePrinter;
 import core.printing.BasicElement;
+import core.printing.BasicElementWithChildren;
 import core.printing.Doc;
+import core.printing.Section;
 import core.printing.Sequence;
 import core.printing.SimpleText;
 import core.printing.WarningText;
@@ -20,22 +23,46 @@ public class SecurityProblemePrinter {
 	
 	public void getSecurityProblemDefinitionSection() throws Exception {
 		result.addSection("Security problem definition");
+		addAssetSection();
+        addThreatSection();
+		addSectionOSP();
+		addHypothesisSection();
+		
+		result.pop();
+	}
+
+	protected void addAssetSection() throws Exception {
 		result.addSection("Assets");
 		addAssetsDescription();
 		result.pop();
-        result.addSection("Threats");
+	}
+
+	protected void addThreatSection() throws Exception {
+		result.addSection("Threats");
         addThreatDescription();
         addThreatRationale();
 		result.pop();
+	}
+
+	protected void addSectionOSP() throws Exception {
 		result.addSection("Organizational security policies");
 		for (OSP osp: this.getProject().getListOfOSP()){
-			result.addSection(osp.getId());
-			result.addText(osp.getDescription());
+			result.addSection("OSP." + osp.getId());
+			result.add(osp.getDescription());
+			
+			
 			result.pop();
 		}
 		result.pop();
+	}
+
+	protected void addHypothesisSection() throws Exception {
 		result.addSection("Assumptions");
-		result.pop();
+		for (Hypothesis h: this.getProject().getToeEnvironment().getListHypothesis()){
+			result.addSection("H." + h.getId());
+			result.add(h.getDescription());
+			result.pop();
+		}
 		result.pop();
 	}
 	
@@ -56,6 +83,11 @@ public class SecurityProblemePrinter {
 		result.pop();
 		
 	}
+	
+
+	
+
+
 
 
 	public SecurityProblemePrinter(SecurityTarget st, Doc result) {
@@ -69,8 +101,9 @@ public class SecurityProblemePrinter {
 	
 	private void addThreatDescription() throws Exception {
 		   for (Threat threat: this.getProject().getListeMenaceBienEssentiel()){
+			   if (threat.isEnabled()){
 			   result.addSection("T." + threat.getId());
-			   result.addText(threat.getDescription());
+			   result.add(threat.getDescription());
 			   result.newLine();
 			   result.newLine();
 			   result.addText("This threat targets the following assets:");
@@ -78,11 +111,13 @@ public class SecurityProblemePrinter {
 				   result.addText("TODO").setColor("red");
 			   }
 			   for (CCAsset object: st.getListOfCoveredAsset(threat)){
-				   result.addText("A." + object.getId()+ " ");
+				   if (object.isEnabled()){
+				     result.addText("A." + object.getId()+ " ");
+				   }
 			   }
 			   result.newLine();
 			   result.pop();
-				
+			   }
 		   }
 			
 		}
@@ -109,7 +144,7 @@ public class SecurityProblemePrinter {
 
 		private void addAssetSection(Asset asset) throws Exception {
 			addAssetSectionTitle(asset);
-			result.addText(asset.getDescription());
+			result.add(asset.getDescription());
 			result.newLine();
 			result.newLine();
 
@@ -135,7 +170,7 @@ public class SecurityProblemePrinter {
 		}
 		
 		protected BasicElement getAssetProtectionLine(Asset asset) throws Exception {
-			Sequence result = new Sequence(); 
+			BasicElementWithChildren result = new Sequence(); 
 			if (asset.getListOfSecurityNeed().isEmpty()){
 				return new WarningText("New security need defined for that asset");
 			} else {

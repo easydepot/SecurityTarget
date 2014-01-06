@@ -8,6 +8,7 @@ public class TOEEnvironment {
 	private ArrayList<CCAsset> roles = new ArrayList<CCAsset>();
 	private ArrayList<CCAsset> directExternalEntities = new ArrayList<CCAsset>();
 	private ArrayList<CCAsset> indirectExternalEntities = new ArrayList<CCAsset>();
+	private ArrayList<Hypothesis> listOfHypothesis = new ArrayList<Hypothesis>();
 	
 	
 	public void addRole(CCAsset role){
@@ -24,7 +25,10 @@ public class TOEEnvironment {
 	}
 
 
-	
+	public  ArrayList<Hypothesis> getListHypothesis() {
+		
+		return listOfHypothesis;
+	}
 
 
 	public ArrayList<CCAsset> getDirectExternalEntities() {

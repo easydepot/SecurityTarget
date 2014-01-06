@@ -1,13 +1,10 @@
 package core.cc;
 
-import static org.junit.Assert.fail;
-import junit.framework.Assert;
+import static org.junit.Assert.*;
 
+import org.junit.Assert;
 import org.junit.Test;
 
-import contremesure.CounterMeasure;
-
-import core.RiskAnalysis;
 import core.TestRiskAnalysis;
 import core.asset.CCAsset;
 import core.asset.Functionnality;
@@ -24,6 +21,26 @@ public class TestSecurityTarget extends TestRiskAnalysis {
 		} catch (Exception e) {
 			
 		}	
+	}
+	
+	@Test
+	public void test_searchThreatByID_must_fail_when_asset_not_found_case_no_asset(){
+		SecurityTarget st = new SecurityTarget();	
+		try {
+			st.searchThreatByID("unknown");
+			fail("the above method must fail");
+		} catch (Exception e) {
+			
+		}	
+	}
+	
+	@Test
+	public void test_searchThreatByID_must_return_the_threat_object_with_the_matching_ID() throws Exception{
+		SecurityTarget st = new SecurityTarget();	
+		Threat a = new Threat("ID");
+		st.addThreat(a);
+		assertEquals(a,st.searchThreatByID("ID"));
+		
 	}
 	
 	SecurityTarget st;
@@ -82,7 +99,7 @@ public class TestSecurityTarget extends TestRiskAnalysis {
 	@Test 
 	public void test_getListCoveredAsset_does_not_returns_null(){
 		SecurityTarget st = new SecurityTarget();	
-		Threat t = new Threat();
+		Threat t = new Threat("id");
 		Assert.assertNotNull(st.getListOfCoveredAsset(t));
 		
 
@@ -112,7 +129,7 @@ public class TestSecurityTarget extends TestRiskAnalysis {
 	@Test 
 	public void test_getListCoveredAsset_returns_emptylist_when_no_covering_is_defined(){
 		SecurityTarget st = new SecurityTarget();	
-		Threat t = new Threat();
+		Threat t = new Threat("id");
 		Assert.assertEquals(0, st.getListOfCoveredAsset(t).size());
 		
 
@@ -121,7 +138,7 @@ public class TestSecurityTarget extends TestRiskAnalysis {
 	@Test 
 	public void test_getListCoveredAsset_returns_list_of_covered_asset(){
 		SecurityTarget st = new SecurityTarget();	
-		Threat t = new Threat();
+		Threat t = new Threat("id");
 		CCAsset asset1 = new CCAsset("asset1");
 		CCAsset asset2 = new CCAsset("asset2");
 		st.addCoverage(asset1, t);
@@ -165,8 +182,8 @@ public class TestSecurityTarget extends TestRiskAnalysis {
 	@Test 
 	public void test_addOSP() {
 		SecurityTarget st = new SecurityTarget();	
-		OSP osp = new OSP();
-		osp.setId("ID");
+		OSP osp = new OSP("ID");
+		
 		osp.setDescription("description");
 		st.addOSP(osp);
 		Assert.assertNotNull(st.getListOfOSP());

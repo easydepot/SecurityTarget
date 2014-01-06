@@ -9,18 +9,30 @@ import java.util.ArrayList;
 
 
 
+
+
+
+
+
+
+
 import core.RiskAnalysisObject;
 import core.asset.CCAsset;
 import core.cc.SecurityTarget;
 import core.cc.TermAndDefinition;
 import core.cc.attributes.SecurityAttribute;
+import core.printer.CoverageTablePrinter;
 import core.printer.RiskAnalysisPrinter;
 import core.printing.BasicElement;
+import core.printing.BasicElementWithChildren;
 import core.printing.Doc;
+import core.printing.Section;
 import core.printing.Sequence;
+import core.printing.SimpleText;
 import core.printing.list.ListItem;
 import core.printing.table.TablePrinter;
 import core.securityObjective.SecurityObjective;
+import core.threat.Threat;
 
 public class SecurityTargetPrinter extends RiskAnalysisPrinter {
 
@@ -47,7 +59,19 @@ public class SecurityTargetPrinter extends RiskAnalysisPrinter {
 		
 		getSecurityProblemDefinitionSection();
 		addSecurityObjectiveSection();
-		addSecurityRequirementSection();
+		//addSecurityRequirementSection();
+		addRationalSection();
+	}
+
+
+
+
+	
+
+	private void addRationalSection() throws Exception {
+		RationalePrinter printer = new RationalePrinter(this.getProject());
+		result.add(printer.addRationalSection());
+		
 	}
 
 
@@ -74,7 +98,7 @@ public class SecurityTargetPrinter extends RiskAnalysisPrinter {
 		result.pop();
 		result.pop();
 		result.pop();
-		result.pop();
+		
 	}
 
 
@@ -253,9 +277,9 @@ public class SecurityTargetPrinter extends RiskAnalysisPrinter {
 		result.addSection("Security Objectives");
 		addSectionTOESecurityObjective();
 		addSectionEnvironmentSecurityObjective();
-		result.addSection("Rationale for Security Objective	");
+		/*result.addSection("Rationale for Security Objective	");
 		result.addText("TODO");
-		result.pop();
+		result.pop();*/
 		result.addSection("Extended component definition");
 		result.addText("There is none.");
 		result.pop();
@@ -282,6 +306,31 @@ public class SecurityTargetPrinter extends RiskAnalysisPrinter {
 		result.addSection("OT." + secobj.getId());
 		result.add(secobj.getDescription());
 		result.add(printListOfSubobjective(secobj));
+
+		ArrayList<RiskAnalysisObject> listOfCoveredThreat = this.getProject().getThreatAgainstObjectives().getListOfCoveredObject(secobj);
+		if (!listOfCoveredThreat.isEmpty()){
+			result.newLine();
+			result.addText("Covered Threat:");	
+		  ListItem l = new ListItem();
+		  result.add(l);
+		  for (RiskAnalysisObject t:  listOfCoveredThreat){
+			  l.addItem("T." + t.getId() +" ");
+			  
+		  }
+		}
+		
+		ArrayList<RiskAnalysisObject> listOfCoveredOSP = this.getProject().getOSPAgainstObjectives().getListOfCoveredObject(secobj);
+		if (!listOfCoveredOSP.isEmpty()){
+			result.newLine();
+			result.addText("Covered OSP:");
+		  ListItem l = new ListItem();
+		  result.add(l);
+		  for (RiskAnalysisObject t:  listOfCoveredOSP){
+			  l.addItem("OSP." + t.getId() +" ");
+			  
+		  }
+		}
+		
 		result.pop();
 	}
 
@@ -289,6 +338,10 @@ public class SecurityTargetPrinter extends RiskAnalysisPrinter {
 
 
 	
+	
+
+
+
 	protected static ListItem getListPrintStructure(SecurityObjective secobj) throws Exception {
 		ListItem result = new ListItem();
 		for (SecurityObjective sub: secobj.getListSubObjective()){
@@ -319,6 +372,18 @@ public class SecurityTargetPrinter extends RiskAnalysisPrinter {
 		for (SecurityObjective secobj: this.getProject().getEnvironementSecurityObjective()){
 			result.addSection("OE." + secobj.getId());
 			result.add(secobj.getDescription());
+			ArrayList<RiskAnalysisObject> listOfCoveredHypothesis = this.getProject().getHypothesisAgainstEnvironmentObjectives().getListOfCoveredObject(secobj);
+			if (!listOfCoveredHypothesis.isEmpty()){
+				result.newLine();
+				result.addText("Covered Hypothesis:");	
+			  ListItem l = new ListItem();
+			  result.add(l);
+			  for (RiskAnalysisObject t:  listOfCoveredHypothesis){
+				  l.addItem("A." + t.getId() +" ");
+				  
+			  }
+			}
+			
 			result.pop();
 		}
 		result.pop();
@@ -466,7 +531,7 @@ public class SecurityTargetPrinter extends RiskAnalysisPrinter {
 
 	private void addEachToeOperationDescriptionWithException() throws Exception {
 		for (int i = 0; i < this.getProject().getNumberOfBienEssentiel();i++){
-			result.addSection(this.getProject().getBienEssentiel(i).getDescription());
+			result.addSection(((SimpleText)this.getProject().getBienEssentiel(i).getDescription()).getText());
 			
 				result.pop();
 			}
@@ -549,7 +614,7 @@ public class SecurityTargetPrinter extends RiskAnalysisPrinter {
 
 
 
-	public static Sequence printLineTermAndDefinition(TermAndDefinition def) throws Exception {
+	public static BasicElementWithChildren printLineTermAndDefinition(TermAndDefinition def) throws Exception {
 		Sequence s = new Sequence();
 		s.addText(def.getTerm()).setBold(true);
 		s.addText(": ");
