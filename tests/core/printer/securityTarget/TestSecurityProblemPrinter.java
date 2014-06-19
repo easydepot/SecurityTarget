@@ -6,8 +6,8 @@ import org.junit.Test;
 
 import core.asset.Asset;
 import core.cc.SecurityTarget;
+import core.printing.BasicElementWithChildren;
 import core.printing.Doc;
-import core.printing.Sequence;
 import core.printing.SimpleText;
 import core.printing.WarningText;
 import core.securityneed.Integrity;
@@ -29,7 +29,7 @@ public class TestSecurityProblemPrinter {
 		SecurityProblemePrinter stprinter = new SecurityProblemePrinter(st,new Doc());
 		Asset asset = new Asset("id");
 		asset.addSecurityNeed(new Integrity());
-		Sequence s = (Sequence) stprinter.getAssetProtectionLine(asset);
+		BasicElementWithChildren s = (BasicElementWithChildren) stprinter.getAssetProtectionLine(asset);
 		Assert.assertEquals("Protection:", ((SimpleText)s.get(0)).getText());
 		Assert.assertEquals("integrity ", ((SimpleText)s.get(1)).getText());
 	}

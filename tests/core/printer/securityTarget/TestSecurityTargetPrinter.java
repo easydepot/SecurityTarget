@@ -10,7 +10,7 @@ import core.cc.SecurityTarget;
 import core.cc.TermAndDefinition;
 import core.cc.attributes.SecurityAttribute;
 import core.printing.BasicElement;
-import core.printing.Sequence;
+import core.printing.BasicElementWithChildren;
 import core.printing.SimpleText;
 import core.printing.WarningText;
 import core.printing.list.ListItem;
@@ -29,8 +29,8 @@ public class TestSecurityTargetPrinter {
 	
 	@Test
 	public void test_printListOfSubobjective_withnosubobjective() throws Exception {
-		SecurityObjective secobj = new SecurityObjective();
-		Sequence s = (Sequence) SecurityTargetPrinter.printListOfSubobjective(secobj);
+		SecurityObjective secobj = new SecurityObjective("id");
+		BasicElementWithChildren s = (BasicElementWithChildren) SecurityTargetPrinter.printListOfSubobjective(secobj);
 		Assert.assertEquals(0, s.size());
 		
 
@@ -48,7 +48,7 @@ public class TestSecurityTargetPrinter {
 	@Test
 	public void test_printLineTermAndDefinition_return_TermLine() throws Exception {
 		TermAndDefinition def = new TermAndDefinition("term","definition");
-		Sequence s = SecurityTargetPrinter.printLineTermAndDefinition(def);
+		BasicElementWithChildren s = SecurityTargetPrinter.printLineTermAndDefinition(def);
 		Assert.assertEquals(3, s.size());
 		Assert.assertEquals("term", ((SimpleText)s.get(0)).getText());
 		Assert.assertEquals("definition", ((SimpleText)s.get(2)).getText());
@@ -68,7 +68,7 @@ public class TestSecurityTargetPrinter {
 	@Test
 	public void test_printListOfSubobjective_withsubobjective() throws Exception {
 		SecurityObjective secobj = givenASecurityObjectiveWithOneSubobjective();
-		Sequence s = (Sequence) SecurityTargetPrinter.printListOfSubobjective(secobj);
+		BasicElementWithChildren s = (BasicElementWithChildren) SecurityTargetPrinter.printListOfSubobjective(secobj);
 		Assert.assertNotSame(0, s.size());
 		Assert.assertEquals("This objective covers the following subobjectives:", ((SimpleText)s.get(0)).getText());
 		Assert.assertEquals(ListItem.class,s.get(1).getClass());
@@ -77,8 +77,8 @@ public class TestSecurityTargetPrinter {
 	}
 
 	private SecurityObjective givenASecurityObjectiveWithOneSubobjective() throws Exception {
-		SecurityObjective secobj = new SecurityObjective();
-		SecurityObjective subobj = new SecurityObjective();
+		SecurityObjective secobj = new SecurityObjective("id");
+		SecurityObjective subobj = new SecurityObjective("id");
 		subobj.setDescription("description");
 		subobj.setId("myID");
 		secobj.add(subobj);
@@ -95,7 +95,7 @@ public class TestSecurityTargetPrinter {
 	
 	@Test
 	public void test_subobjectiveLine_returns_a_string_containing_the_sub_objective_description() throws Exception {
-		SecurityObjective secobj = new SecurityObjective();
+		SecurityObjective secobj = new SecurityObjective("id");
 		BasicElement description = new SimpleText("description");
 		secobj.setDescription(description);
 		BasicElement s = SecurityTargetPrinter.printSubObjectiveLine(secobj);
@@ -267,8 +267,8 @@ public class TestSecurityTargetPrinter {
 	@Test
 	public void test_getAugmentationListItem_content() throws Exception {
 		ListItem result = getListPrint();
-		Assert.assertEquals("ALC_FLR.3", ((SimpleText)((Sequence) result.get(0)).get(0)).getText());
-		Assert.assertEquals("AVA_VAN.3", ((SimpleText)((Sequence) result.get(1)).get(0)).getText());
+		Assert.assertEquals("ALC_FLR.3", ((SimpleText)((BasicElementWithChildren) result.get(0)).get(0)).getText());
+		Assert.assertEquals("AVA_VAN.3", ((SimpleText)((BasicElementWithChildren) result.get(1)).get(0)).getText());
 		
 	}
 

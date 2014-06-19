@@ -17,16 +17,55 @@ public class SecurityTarget extends RiskAnalysis {
 	AssuranceLevel assuranceLevel = new AssuranceLevel();
 	TOEOverview data = new TOEOverview();
 	
+	
+	
 	ArrayList<SecurityObjective> toeSecurityObjectives = new ArrayList<SecurityObjective>();
 	ArrayList<SecurityObjective> EnvironementSecurityObjective = new ArrayList<SecurityObjective>();
 	ArrayList<TermAndDefinition> TermAndDefinitionList = new ArrayList<TermAndDefinition> ();
 	ArrayList<OSP> listOfOSP = new ArrayList<OSP>();
 	
 	CoverageTable assetAgainstThreat = new CoverageTable();
+	CoverageTable threatAgainstObjectives = new CoverageTable();
+	CoverageTable OSPAgainstObjectives = new CoverageTable();
+	CoverageTable HypothesisAgainstEnvironmentObjectives = new CoverageTable();
 	
+	public CoverageTable getHypothesisAgainstEnvironmentObjectives() {
+		return HypothesisAgainstEnvironmentObjectives;
+	}
+
+	public CoverageTable getOSPAgainstObjectives() {
+		return OSPAgainstObjectives;
+	}
+
+	public void addCoverage(OSP t, SecurityObjective o){
+		this.OSPAgainstObjectives.addCoverage(t, o);
+	}
 	
+	public void addCoverage(Hypothesis t, SecurityObjective o){
+		this.HypothesisAgainstEnvironmentObjectives.addCoverage(t, o);
+	}
 	
+	public void addCoverage(Threat t, SecurityObjective o){
+		this.threatAgainstObjectives.addCoverage(t, o);
+	}
 	
+	public CoverageTable getThreatAgainstObjectives() {
+		return threatAgainstObjectives;
+	}
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
 	public CoverageTable getAssetAgainstThreatCoverageTable() {
 		return assetAgainstThreat;
 	}
@@ -34,7 +73,7 @@ public class SecurityTarget extends RiskAnalysis {
 	
 
 
-
+	
 
 
 	public void addCoverage(CCAsset coveredObject,
@@ -183,6 +222,104 @@ public class SecurityTarget extends RiskAnalysis {
 		
 	}
 
+
+
+
+
+
+
+
+
+   private static RiskAnalysisObject searchRiskAnalysisObjectByID(String id,ArrayList<RiskAnalysisObject> list) throws Exception{
+	   for (RiskAnalysisObject t: list){
+			if (t.getId().contentEquals(id)){
+				return t;
+			}
+		}
+	   throw new Exception("");
+   }
+
+
+   private static ArrayList<RiskAnalysisObject> convertThreat( ArrayList<Threat> list){
+	 ArrayList<RiskAnalysisObject> l = new ArrayList<RiskAnalysisObject>();
+	 for (Threat e: list){
+		 l.add(e);
+	 }
+	return l;
+	   
+   }
+   
+   private static ArrayList<RiskAnalysisObject> convertSecurityObjective( ArrayList<SecurityObjective> list){
+		 ArrayList<RiskAnalysisObject> l = new ArrayList<RiskAnalysisObject>();
+		 for (SecurityObjective e: list){
+			 l.add(e);
+		 }
+		return l;
+		   
+	   }
+   
+   private static ArrayList<RiskAnalysisObject> convertToOSPList( ArrayList<OSP> list){
+		 ArrayList<RiskAnalysisObject> l = new ArrayList<RiskAnalysisObject>();
+		 for (OSP e: list){
+			 l.add(e);
+		 }
+		return l;
+		   
+	   }
+
+	public Threat searchThreatByID(String threatID) throws Exception {
+		
+		try {
+			return (Threat) searchRiskAnalysisObjectByID(threatID,convertThreat(this.getListeMenaceBienEssentiel()));
+		} catch (Exception e) {
+			throw new Exception("Threat " + threatID + "not found");
+		}
+		
+		
+		
+	}
+
+public SecurityObjective searchTOEObjectiveByID(String securityObjectiveID) throws Exception {
+		
+		try {
+			return (SecurityObjective) searchRiskAnalysisObjectByID(securityObjectiveID,convertSecurityObjective(this.getSecurityObjective()));
+		} catch (Exception e) {
+			throw new Exception("SecurityObjective " + securityObjectiveID + "not found");
+		}
+		
+		
+		
+	}
+
+public OSP searchOspByID(String ospID) throws Exception {
+	
+	try {
+		return (OSP) searchRiskAnalysisObjectByID(ospID,convertToOSPList(this.getListOfOSP()));
+	} catch (Exception e) {
+		throw new Exception("OSP  " + ospID + "not found");
+	}
+	
+	
+	
+}
+
+public Hypothesis searchHypothesisByID(String hypothesisID) {
+	for (Hypothesis h: this.toeEnvironment.getListHypothesis()){
+		if (hypothesisID.contentEquals(h.getId())){
+			return h;
+		}
+	}
+	return null;
+}
+
+public SecurityObjective searchEnvironmementObjectiveByID(String environementID) {
+	for (SecurityObjective o: this.getEnvironementSecurityObjective()){
+		if (environementID.contentEquals(o.getId())){
+			return o;
+		}
+	}
+	return null;
+}
 
 
 	
