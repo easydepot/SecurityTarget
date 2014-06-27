@@ -2,8 +2,13 @@ package core.cc;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.junit.Assert;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 import core.TestRiskAnalysis;
 import core.asset.CCAsset;
@@ -13,7 +18,7 @@ import core.threat.Threat;
 public class TestSecurityTarget extends TestRiskAnalysis {
 
 	@Test
-	public void test_searchBienSupport_must_fail_when_asset_not_found_case_no_asset() {
+	public void test_searchBienSupport_must_fail_when_asset_not_found_case_no_asset() throws SAXException, IOException, ParserConfigurationException {
 		SecurityTarget st = new SecurityTarget();	
 		try {
 			st.searchBienSupport("unknown");
@@ -24,7 +29,7 @@ public class TestSecurityTarget extends TestRiskAnalysis {
 	}
 	
 	@Test
-	public void test_searchThreatByID_must_fail_when_asset_not_found_case_no_asset(){
+	public void test_searchThreatByID_must_fail_when_asset_not_found_case_no_asset() throws SAXException, IOException, ParserConfigurationException{
 		SecurityTarget st = new SecurityTarget();	
 		try {
 			st.searchThreatByID("unknown");
@@ -46,14 +51,14 @@ public class TestSecurityTarget extends TestRiskAnalysis {
 	SecurityTarget st;
 	
 	@Test
-	public void test_addFunctionnality(){
+	public void test_addFunctionnality()throws Exception{
 		givenAnEmptySecurityTarget();
 		whenAddingAFunctionality();
 		Assert.assertEquals(1, st.getNumberOfBienEssentiel());
 	}
 	
 	@Test
-	public void test_addFunctionnality2(){
+	public void test_addFunctionnality2()throws Exception{
 		givenAnEmptySecurityTarget();
 		whenAddingAFunctionality();
 		Assert.assertEquals(1, st.getSystemDescription().getFunctionalityList().size());
@@ -65,13 +70,13 @@ public class TestSecurityTarget extends TestRiskAnalysis {
 	}
 
 
-	private void givenAnEmptySecurityTarget() {
+	private void givenAnEmptySecurityTarget() throws SAXException, IOException, ParserConfigurationException {
 		st = new SecurityTarget();
 	}
 	
 	
 	@Test 
-	public void searchBienSupport_must_success_when_finding_a_matching_role(){
+	public void searchBienSupport_must_success_when_finding_a_matching_role() throws SAXException, IOException, ParserConfigurationException{
 		
 		CCAsset asset = new CCAsset("ID");
 		SecurityTarget st = new SecurityTarget();	
@@ -87,7 +92,7 @@ public class TestSecurityTarget extends TestRiskAnalysis {
 	
 	
 	@Test 
-	public void test_add_asset_coverage_and_verify_that_the_asset_is_covered() {
+	public void test_add_asset_coverage_and_verify_that_the_asset_is_covered() throws Exception {
 		SecurityTarget st = new SecurityTarget();	
 		CCAsset asset = new CCAsset("asset1");
 		asset.setDescription("description");
@@ -97,7 +102,7 @@ public class TestSecurityTarget extends TestRiskAnalysis {
 	}
 	
 	@Test 
-	public void test_getListCoveredAsset_does_not_returns_null(){
+	public void test_getListCoveredAsset_does_not_returns_null()throws Exception{
 		SecurityTarget st = new SecurityTarget();	
 		Threat t = new Threat("id");
 		Assert.assertNotNull(st.getListOfCoveredAsset(t));
@@ -107,19 +112,19 @@ public class TestSecurityTarget extends TestRiskAnalysis {
 	
 
 	@Test 
-	public void test_getEnvironementSecurityObjective_does_not_returns_null(){
+	public void test_getEnvironementSecurityObjective_does_not_returns_null()throws Exception{
 		SecurityTarget st = new SecurityTarget();	
 		Assert.assertNotNull(st.getEnvironementSecurityObjective());
 	}
 	
 	@Test 
-	public void test_getSecurityObjective_does_not_returns_null(){
+	public void test_getSecurityObjective_does_not_returns_null()throws Exception{
 		SecurityTarget st = new SecurityTarget();	
 		Assert.assertNotNull(st.getSecurityObjective());
 	}
 	
 	@Test 
-	public void test_getIdentification_does_not_returns_null(){
+	public void test_getIdentification_does_not_returns_null()throws Exception{
 		SecurityTarget st = new SecurityTarget();	
 		Assert.assertNotNull(st.getIdentification());
 	}
@@ -127,7 +132,7 @@ public class TestSecurityTarget extends TestRiskAnalysis {
 	
 	
 	@Test 
-	public void test_getListCoveredAsset_returns_emptylist_when_no_covering_is_defined(){
+	public void test_getListCoveredAsset_returns_emptylist_when_no_covering_is_defined()throws Exception{
 		SecurityTarget st = new SecurityTarget();	
 		Threat t = new Threat("id");
 		Assert.assertEquals(0, st.getListOfCoveredAsset(t).size());
@@ -136,7 +141,7 @@ public class TestSecurityTarget extends TestRiskAnalysis {
 	}
 	
 	@Test 
-	public void test_getListCoveredAsset_returns_list_of_covered_asset(){
+	public void test_getListCoveredAsset_returns_list_of_covered_asset()throws Exception{
 		SecurityTarget st = new SecurityTarget();	
 		Threat t = new Threat("id");
 		CCAsset asset1 = new CCAsset("asset1");
@@ -149,7 +154,7 @@ public class TestSecurityTarget extends TestRiskAnalysis {
 	}
 	
 	@Test
-	public void test_searchBienSupport_succeed_when_asset_is_disabled() {
+	public void test_searchBienSupport_succeed_when_asset_is_disabled() throws Exception{
 		SecurityTarget st = new SecurityTarget();
 		CCAsset bs = new CCAsset("ident");
 		bs.disable();
@@ -166,21 +171,21 @@ public class TestSecurityTarget extends TestRiskAnalysis {
 	}
 	
 	@Test
-	public void test_termAndDefinitionList_emptyList() {
+	public void test_termAndDefinitionList_emptyList() throws Exception{
 		SecurityTarget st = new SecurityTarget();	
 		Assert.assertNotNull("",st.getTermAndDefinitionList());
 		Assert.assertEquals(0, st.getTermAndDefinitionList().size());
 	}
 	
 	@Test 
-	public void test_getListOfOSP_emptyList() {
+	public void test_getListOfOSP_emptyList() throws Exception{
 		SecurityTarget st = new SecurityTarget();	
 		Assert.assertNotNull(st.getListOfOSP());
 		Assert.assertEquals(0, st.getListOfOSP().size());
 	}
 	
 	@Test 
-	public void test_addOSP() {
+	public void test_addOSP() throws Exception{
 		SecurityTarget st = new SecurityTarget();	
 		OSP osp = new OSP("ID");
 		
@@ -192,13 +197,13 @@ public class TestSecurityTarget extends TestRiskAnalysis {
 	
 	
 	@Test
-	public void test_test_that_assert_coverage_table_does_not_return_null(){
+	public void test_test_that_assert_coverage_table_does_not_return_null() throws Exception{
 		SecurityTarget st = new SecurityTarget();	
 		Assert.assertNotNull(st.getAssetAgainstThreatCoverageTable());
 	}
 	
 	@Test
-	public void test_test_that_getTOEenvironment_does_not_return_null(){
+	public void test_test_that_getTOEenvironment_does_not_return_null()throws Exception{
 		SecurityTarget st = new SecurityTarget();	
 		Assert.assertNotNull(st.getToeEnvironment());
 	}
@@ -206,7 +211,7 @@ public class TestSecurityTarget extends TestRiskAnalysis {
 	
 	
 	@Test
-	public void test_termAndDefinitionList_withElements() {
+	public void test_termAndDefinitionList_withElements() throws Exception{
 		SecurityTarget st = new SecurityTarget();	
 		st.addTermAndDefinition("term1", "definition1");
 		st.addTermAndDefinition("term2", "definition2");
@@ -215,24 +220,32 @@ public class TestSecurityTarget extends TestRiskAnalysis {
 	}
 	
 	@Test
-	public void test_setType() {
+	public void test_setType() throws Exception{
 		SecurityTarget st = new SecurityTarget();
 		st.setType("type");
 		Assert.assertEquals("type",st.getType());
 	}
 	
 	@Test
-	public void test_setToeUsage() {
+	public void test_setToeUsage() throws Exception{
 		SecurityTarget st = new SecurityTarget();
 		st.setToeUsage("usage");
 		Assert.assertEquals("usage",st.getToeUsage());
 	}
 	
+	
 	@Test
-	public void test_setScope() {
+	public void test_setScope() throws Exception{
 		SecurityTarget st = new SecurityTarget();
 		st.setScope("scope");
 		Assert.assertEquals("scope",st.getScope());
+	}
+	
+	
+	@Test
+	public void test_getSFRs() throws Exception{
+		st = new SecurityTarget();
+		assertTrue(st.getSFRPart().getListOfTOESFR().isEmpty());
 	}
 	
 	@Test
@@ -257,7 +270,7 @@ public class TestSecurityTarget extends TestRiskAnalysis {
 
 	
 	@Test
-	public void test_searchBienSupport_must_fail_when_asset_not_found_case_no_matching_asset() {
+	public void test_searchBienSupport_must_fail_when_asset_not_found_case_no_matching_asset() throws Exception{
 		SecurityTarget st = new SecurityTarget();
 		st.getSystemDescription().getAssetList().add(new CCAsset("id"));
 		

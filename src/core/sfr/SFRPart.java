@@ -37,7 +37,7 @@ public class SFRPart {
 
 	public SFR findSFRbyID(String ident, String instance) throws Exception {
 		for (SFR sfr:this.listOfTOESFR){
-			if (sfr.getIdent().contentEquals(ident)){
+			if (sfr.getIdent().contentEquals(ident.toUpperCase())){
 				if (instance==null){
 				  return sfr;
 				} else {

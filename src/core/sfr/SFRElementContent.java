@@ -1,8 +1,10 @@
 package core.sfr;
 
+import core.printing.BasicElement;
+
 public abstract class SFRElementContent {
 	
-	protected abstract String getContent();
+	protected abstract BasicElement getContent();
 
 	@Override
 	protected abstract Object clone() throws CloneNotSupportedException; 

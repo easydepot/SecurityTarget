@@ -21,6 +21,31 @@ public class TestsFR {
 
 	}
 	
+	
+	@Test
+	public void testGetIdent_lowerCase() {
+		SFR sfr = new SFR("fmt_mtd.1",null,"Management Management of TSF data");
+		Assert.assertEquals("FMT_MTD.1", sfr.getFullIdent());
+
+	}
+	
+	@Test
+	public void testInstanciedIdent_lowerCase() {
+		SFR sfr = new SFR(null,"fmt_mtd.1","Management Management of TSF data");
+		sfr.instance = "i1";
+		Assert.assertEquals("FMT_MTD.1/i1", sfr.getInstanciedIdent());
+
+	}
+	
+	@Test
+	public void testGetIdent_getIdent() {
+		SFR sfr = new SFR(null,"fmt_mtd.1","Management Management of TSF data");
+		Assert.assertEquals("FMT_MTD.1", sfr.getIdent());
+
+	}
+	
+	
+	
 	@Test
 	public void testAddSFRElement() {
 		SFR sfr = new SFR("FMT_MTD.1");
@@ -46,7 +71,7 @@ public class TestsFR {
 	@Test
 	public void testGetIdent() {
 		SFR sfr = new SFR("FMT_MTD.1","ident","Management Management of TSF data");
-		Assert.assertEquals("ident", sfr.getIdent());
+		Assert.assertEquals("ident".toUpperCase(), sfr.getIdent());
 	}
 	
 	@Test

@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
+import core.printing.SimpleText;
+
 
 public class TestSFRAssignement {
 	
@@ -23,14 +25,18 @@ public class TestSFRAssignement {
 	@Test
 	public void test_that_by_default_getcontent_returns_default_value() {
 		givenAnAssignement();
-		assertEquals("[assignement]",sut.getContent());
+		assertThatGetContentReturns("[assignement]");
+	}
+
+	private void assertThatGetContentReturns(String textResult) {
+		assertEquals(textResult,((SimpleText)sut.getContent()).getText());
 	}
 	
 	@Test
 	public void test_that_by_default_getcontent_returns_the_setted_content() {
 		givenAnAssignement();
 		when_setting_the_content();
-		assertEquals("content",sut.getContent());
+		assertThatGetContentReturns("content");
 	}
 
 

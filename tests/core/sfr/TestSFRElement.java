@@ -4,11 +4,10 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
-import junit.framework.Assert;
 
 import org.junit.Test;
 
-import core.sfr.SFR;
+import core.printing.SimpleText;
 import core.sfr.SFRElement;
 import core.sfr.SFRElementAssignement;
 
@@ -30,22 +29,28 @@ public class TestSFRElement {
 		assertFalse(sut.hasContent());
 	}
 	
+	@Test
+	public void test_getIdent_returns_upper_case() {
+		given_a_SFR_element();
+		assertEquals("FMT_MTD.1.1",sut.getIdent());
+	}
+	
 
 	@Test
-	public void test_that_getContent_return_empty_String() {
+	public void test_that_getContent_return_empty_String() throws Exception {
 		 given_a_SFR_element();
 		assertEquals("",sut.getContent());
 	}
 	
 	@Test
-	public void test_that_getContent_return_added_elements() {
+	public void test_that_getContent_return_added_elements() throws Exception {
 		 given_a_SFR_element();
 		when_adding_a_text_content();
-		assertEquals("content",sut.getContent());
+		assertEquals("content",((SimpleText)sut.getContent()).getText());
 	}
 	
 	@Test
-	public void test_that_getContent_return_all_added_elements() {
+	public void test_that_getContent_return_all_added_elements() throws Exception {
 		 given_a_SFR_element();
 		when_adding_a_text_content();
 		sut.addContent(" and another content");
@@ -53,7 +58,7 @@ public class TestSFRElement {
 	}
 	
 	@Test
-	public void test_that_getContent_return_all_added_elements_including_assignment() {
+	public void test_that_getContent_return_all_added_elements_including_assignment() throws Exception {
 		 given_a_SFR_element();
 		when_adding_a_text_content();
 		sut.addNewAssignement();
@@ -62,7 +67,7 @@ public class TestSFRElement {
 	}
 	
 	@Test
-	public void test_that_getContent_return_all_added_assignment() {
+	public void test_that_getContent_return_all_added_assignment() throws Exception {
 		 given_a_SFR_element();
 		sut.addNewAssignement();
 		sut.addNewAssignement();
@@ -166,7 +171,7 @@ public class TestSFRElement {
 	}
 
 	private void given_a_SFR_element() {
-		sut = new SFRElement("FMT_MTD.1.1");
+		sut = new SFRElement("fmt_mtd.1.1");
 	}
 
 }

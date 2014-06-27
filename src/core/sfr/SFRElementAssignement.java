@@ -1,5 +1,8 @@
 package core.sfr;
 
+import core.printing.BasicElement;
+import core.printing.SimpleText;
+
 public class SFRElementAssignement extends SFRElementContent {
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
@@ -10,13 +13,13 @@ public class SFRElementAssignement extends SFRElementContent {
 		return cloned;
 	}
 
-	String content;
+	BasicElement content;
 
-	protected String getContent() {
-		if (this.isAssigned()){
+	protected BasicElement getContent() {
+		if (content!=null){
 			return content;
 		} else {
-		  return "[assignement]";
+		  return new SimpleText("[assignement]");
 		}
 	}
 
@@ -24,7 +27,7 @@ public class SFRElementAssignement extends SFRElementContent {
 		super();
 	}
 
-	public void setContent(String content) {
+	public void setContent(BasicElement content) {
 		this.content = content;
 	}
 
@@ -39,6 +42,11 @@ public class SFRElementAssignement extends SFRElementContent {
 
 	public void ignoreAssignement() {
 		ignore_assignement = true;		
+	}
+
+	public void setContent(String string) {
+		this.content = new SimpleText(string);
+		
 	}
 	
 	

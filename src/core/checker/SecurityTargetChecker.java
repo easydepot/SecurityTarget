@@ -1,7 +1,10 @@
 package core.checker;
 
+import java.util.ArrayList;
+
 import core.asset.Asset;
 import core.asset.CCAsset;
+import core.cc.OSP;
 import core.cc.SecurityTarget;
 
 public class SecurityTargetChecker {
@@ -23,6 +26,8 @@ public class SecurityTargetChecker {
 		checkThatAtLeastOneFunctionIsDefined();
 		checkRole();
 		checkAllAssets();
+		checkOSP();
+		
 		
 		System.out.print("[Checking OK]");
 	}
@@ -76,6 +81,20 @@ public class SecurityTargetChecker {
 		if (this.securityTarget.getNumberOfBienEssentiel()==0){
 			throw new Exception("No TOE functionnalities are defined");
 		}
+	}
+	
+	private boolean hasOSP(){
+		return  !this.securityTarget.getListOfOSP().isEmpty();
+	}
+
+	protected void checkOSP() throws Exception {
+		ArrayList<OSP> listOfOSP = this.securityTarget.getListOfOSP();
+		for (OSP osp : listOfOSP){
+			if (!osp.hasDescription()){
+			  throw new Exception("osp:" + osp.getId() + " has no description.");
+			}
+		}
+        		
 	}
 
 	

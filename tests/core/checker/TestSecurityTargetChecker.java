@@ -1,13 +1,20 @@
 package core.checker;
 
 import static org.junit.Assert.fail;
+
+import java.io.IOException;
+
+import javax.xml.parsers.ParserConfigurationException;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 import core.asset.Asset;
 import core.asset.CCAsset;
 import core.asset.Functionnality;
+import core.cc.OSP;
 import core.cc.SecurityTarget;
 import core.securityneed.Integrity;
 import core.securityneed.SecurityNeed;
@@ -22,7 +29,7 @@ public class TestSecurityTargetChecker {
 	}
 	
 	@Test
-	public void test_setSecurityTarget() {
+	public void test_setSecurityTarget() throws SAXException, IOException, ParserConfigurationException {
 		SecurityTarget st = new SecurityTarget();
 		SecurityTargetChecker sut = new SecurityTargetChecker();
 		sut.setSecurityTarget(st);
@@ -41,6 +48,69 @@ public class TestSecurityTargetChecker {
 		} catch (Exception e) {
 			
 		}
+	}
+	
+
+	@Test
+	public void test_checkOSP_terminates_normaly_if_no_OSP_defined() throws Exception{
+		SecurityTargetChecker sut=  givenAnUninitializedSecurityTarget() ;
+		sut.checkOSP();
+	}
+	
+	SecurityTargetChecker sut;
+	
+	@Test
+	public void test_checkOSP_terminates_with_an_exception_if_an_OSP_defined_without_definition(){
+		sut =  givenAnUninitializedSecurityTarget() ;
+		when_Adding_An_OSP_to_The_Security_Target();
+		check_that_checkOSP_must_throw_an_exception();
+	}
+	
+	@Test
+	public void test_checkOSP_terminates_normaly_if_an_OSP_defined_witht_definition() throws Exception{
+		sut =  givenAnUninitializedSecurityTarget() ;
+		when_Adding_An_OSP_to_The_Security_Target();
+		when_setting_a_description_to_the_OSP();
+		sut.checkOSP();
+	}
+	
+	@Test
+	public void test_checkOSP_terminates_with_an_exception_if_at_least_an_OSP_defined_without_definition() throws Exception{
+		sut =  givenAnUninitializedSecurityTarget() ;
+		when_Adding_An_OSP_to_The_Security_Target();
+		when_Adding_Another_OSP_to_The_Security_Target();
+		when_setting_a_description_to_the_OSP();
+		check_that_checkOSP_must_throw_an_exception();
+	}
+
+	private void when_setting_a_description_to_the_OSP() {
+		osp.setDescription("description");
+	}
+	
+	
+	
+	
+
+	private void check_that_checkOSP_must_throw_an_exception() {
+		try {
+		  sut.checkOSP();
+		  fail("SHALL throw an exception");
+		} catch (Exception e) {
+			
+		}
+	}
+	
+	OSP osp;
+	OSP osp2;
+
+	private void when_Adding_An_OSP_to_The_Security_Target() {
+		osp =new OSP("ospIdent");
+		st.addOSP(osp);
+	}
+	
+	private void when_Adding_Another_OSP_to_The_Security_Target() {
+		osp2 =new OSP("ospIdent2");
+		st.addOSP(osp2);
 	}
 	
 	@Test
@@ -228,7 +298,18 @@ public class TestSecurityTargetChecker {
 	private SecurityTargetChecker givenAnUninitializedSecurityTarget() {
 		
 		SecurityTargetChecker sut = new SecurityTargetChecker();
-		st = new SecurityTarget();
+		try {
+			st = new SecurityTarget();
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		sut.setSecurityTarget(st);
 		
 		return sut;

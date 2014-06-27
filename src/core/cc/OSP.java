@@ -8,6 +8,11 @@ public class OSP extends RiskAnalysisObject{
 		super(id2);
 		
 	}
+
+	public boolean hasDescription() {
+		
+		return this.getDescription()!=null;
+	}
   
   
 }

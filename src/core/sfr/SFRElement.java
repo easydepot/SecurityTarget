@@ -2,6 +2,9 @@ package core.sfr;
 
 import java.util.ArrayList;
 
+import core.printing.BasicElement;
+import core.printing.Sequence;
+
 public class SFRElement {
 	
 	
@@ -27,10 +30,10 @@ public class SFRElement {
 		return result;
 	}
 	
-	public String getContent(){
-		String result = "";
+	public BasicElement getContent() throws Exception{
+		Sequence result = new Sequence();
 		for (SFRElementContent s:this.contentList){
-			result += s.getContent();
+			result.add(s.getContent());
 		}
 		return result;
 	}
@@ -43,7 +46,7 @@ public class SFRElement {
 	String ident;
 
 	public String getIdent() {
-		return ident;
+		return ident.toUpperCase();
 	}
 
 	public boolean hasContent() {

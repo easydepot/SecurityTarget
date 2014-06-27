@@ -48,6 +48,7 @@ public class SecurityProblemePrinter {
 		result.addSection("Organizational security policies");
 		for (OSP osp: this.getProject().getListOfOSP()){
 			result.addSection("OSP." + osp.getId());
+			System.out.println(osp.getId());
 			result.add(osp.getDescription());
 			
 			

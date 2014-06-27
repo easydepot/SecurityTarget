@@ -1,8 +1,13 @@
 package core.printer.securityTarget;
 
+import java.io.IOException;
+
+import javax.xml.parsers.ParserConfigurationException;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 import core.asset.Asset;
 import core.asset.CCAsset;
@@ -21,7 +26,7 @@ import core.securityneed.Integrity;
 public class TestSecurityTargetPrinter {
 
 	@Test
-	public void test_Contructor() {
+	public void test_Contructor() throws SAXException, IOException, ParserConfigurationException {
 		SecurityTarget st = new SecurityTarget();
 		SecurityTargetPrinter stprinter = new SecurityTargetPrinter(st);
 		Assert.assertNotNull(stprinter);

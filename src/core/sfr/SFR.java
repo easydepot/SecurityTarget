@@ -41,7 +41,7 @@ public static SFR getNewSFRInstance(String id,String instance_name) throws Excep
   
 public static SFR getNewSFRInstance(String id) throws Exception{
 	for (SFR sfr:listOfSFR){
-		if (sfr.getIdent().contentEquals(id)){
+		if (sfr.getIdent().contentEquals(id.toUpperCase())){
 			SFR result = (SFR) sfr.clone();
 			
 			return result;
@@ -81,19 +81,19 @@ public void setFamily(String family) {
 }
 public String getFullIdent() {
 	if (ident!=null){
-	  return family +"/"+ ident;
+	  return family.toUpperCase() +"/"+ ident;
 	}
 	else {
-		return family;
+		return family.toUpperCase();
 	}
 }
 
 public String getInstanciedIdent() {
 	if (this.instance!=null){
-	  return ident +"/"+ instance;
+	  return this.getIdent() +"/"+ instance;
 	}
 	else {
-		return ident;
+		return this.getIdent();
 	}
 }
 public void setIdent(String ident) {
@@ -106,7 +106,7 @@ public void setName(String name) {
 	this.name = name;
 }
 public String getIdent() {
-	return ident;
+	return ident.toUpperCase();
 }
 
 public void addSFRElement(SFRElement sfrElement) {

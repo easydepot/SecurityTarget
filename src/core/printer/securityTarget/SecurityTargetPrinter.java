@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 
 
+
 import core.RiskAnalysisObject;
 import core.asset.CCAsset;
 import core.cc.SecurityTarget;
@@ -32,6 +33,8 @@ import core.printing.SimpleText;
 import core.printing.list.ListItem;
 import core.printing.table.TablePrinter;
 import core.securityObjective.SecurityObjective;
+import core.sfr.SFR;
+import core.sfr.SFRElement;
 import core.threat.Threat;
 
 public class SecurityTargetPrinter extends RiskAnalysisPrinter {
@@ -47,7 +50,43 @@ public class SecurityTargetPrinter extends RiskAnalysisPrinter {
 		addTitlePage(result, this.getProject());
 		result.addTableOfContents();
 		addContent();
+		printStat();
+
+	
 		return result;
+	}
+
+
+
+
+	private void printStat() throws Exception {
+		System.out.println("\n************\n list of assignement \n**********");
+				
+				
+				int count_assigned = 0;
+				for (core.sfr.SFRElementAssignement a:this.getProject().getSFRPart().getListOfAssignement()){
+					if (a.isAssigned()){count_assigned++;}
+					
+				}
+				// fdp_acc.1/Context_Management_Policy Subset access control
+				//listOfSFR_PP_timestamping.getListOfAssignement().get(1).setContent(" ");
+				
+				int size = this.getProject().getSFRPart().getListOfAssignement().size();
+				System.out.println(count_assigned +"/" +size+" assignement\n" + (count_assigned*100/size)+"% DONE\n");
+		
+		
+				
+				for (SFR sfr: this.getProject().getSFRPart().getListOfTOESFR()){
+					   System.out.println(sfr.getInstanciedIdent()+ " " + sfr.getName());
+					   for (SFRElement e: sfr.getListOfSFRElement()){
+						   if (!e.isAssigned()){
+						     System.out.print("- " + e.getIdent() + "  ");
+						     System.out.print(e.getContent().getText());
+						     System.out.println();
+						   }
+						   
+					   }
+					}
 	}
 
 
@@ -59,7 +98,7 @@ public class SecurityTargetPrinter extends RiskAnalysisPrinter {
 		
 		getSecurityProblemDefinitionSection();
 		addSecurityObjectiveSection();
-		//addSecurityRequirementSection();
+		addSecurityRequirementSection();
 		addRationalSection();
 	}
 
@@ -97,8 +136,41 @@ public class SecurityTargetPrinter extends RiskAnalysisPrinter {
 		addObjectAttributesSection();
 		result.pop();
 		result.pop();
+		result.addSection("SFRs");
+		for (SFR sfr:this.getProject().getSFRPart().getListOfTOESFR()){
+			printSFRDescription(sfr);
+		}
+		result.pop();
 		result.pop();
 		
+	}
+
+
+
+
+	private void printSFRDescription(SFR sfr) throws Exception {
+		result.addSection(sfr.getInstanciedIdent());
+		addAllSFRElementSectionOfAGivenSFR(sfr);
+		result.pop();
+	}
+
+
+
+
+	private void addAllSFRElementSectionOfAGivenSFR(SFR sfr) throws Exception {
+		for (SFRElement e:sfr.getListOfSFRElement()){
+			addSFRElementSection(e);
+		
+		}
+	}
+
+
+
+
+	private void addSFRElementSection(SFRElement e) throws Exception {
+		result.addSection(e.getIdent());
+		result.add(e.getContent());
+		result.pop();
 	}
 
 

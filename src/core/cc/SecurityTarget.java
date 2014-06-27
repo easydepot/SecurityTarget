@@ -1,11 +1,23 @@
 package core.cc;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
+import core.printing.BasicElement;
+import core.printing.list.ListItem;
+import core.sfr.SFR;
+import core.sfr.SFRPart;
 
 import core.RiskAnalysis;
 import core.RiskAnalysisObject;
 import core.asset.Asset;
 import core.asset.CCAsset;
+import core.asset.Functionnality;
+import core.catalog.CCFileParser;
 import core.coverageTable.CoverageTable;
 import core.securityObjective.SecurityObjective;
 import core.threat.Threat;
@@ -321,6 +333,65 @@ public SecurityObjective searchEnvironmementObjectiveByID(String environementID)
 	return null;
 }
 
+/*
+ * SFRPArt
+ */
+
+public void setAssignementContent(int j, String content) {
+	mySFR.getListOfAssignement().get(j).setContent(content);
+}
+
+public void ignoreAssignment(int i) {
+	mySFR.getListOfAssignement().get(i).ignoreAssignement();
+}
+
+
+
+public SecurityTarget() throws SAXException, IOException, ParserConfigurationException {
+	super();
+	CCFileParser.parse();
+
+
+}
+
+public void selectSFR(String ident, String instance)
+		throws Exception {
+	mySFR = listOfSFR.findSFRbyID(ident, instance);
+}
+
+
+
+public void addSFRInstance(String id) throws Exception {
+	listOfSFR.addSFRInstance(id);		
+}
+
+
+
+public void addSFRInstance(String id, String instance_name)
+		throws Exception {
+	listOfSFR.addSFRInstance(id,instance_name);
+}
+
+ SFRPart listOfSFR = new SFRPart();
+
+
+
+
+ SFR mySFR;
+
+public SFRPart getSFRPart() {
+	return this.listOfSFR;
+}
+
+public void setAssignementContent(int j, BasicElement content) {
+	mySFR.getListOfAssignement().get(j).setContent(content);	
+}
+
+public void selectSFR(String identifier) throws Exception {
+	String[] s = identifier.split("/");
+	this.selectSFR(s[0], s[1]);
+	
+}
 
 	
 	
