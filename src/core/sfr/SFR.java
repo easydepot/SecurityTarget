@@ -2,11 +2,16 @@ package core.sfr;
 
 import java.util.ArrayList;
 
+import core.printing.BasicElement;
+import core.printing.SimpleText;
+
 public class SFR {
   String family;
   String ident;
   String name;
   String instance;
+  
+  
   
   public static ArrayList<SFR> listOfSFR = new ArrayList<SFR>();
   
@@ -124,6 +129,8 @@ public ArrayList<SFRElementAssignement> getListOfAssignement() {
 	}
 	return list;
 }
+
+
 
 
   

@@ -6,6 +6,8 @@ import core.asset.Asset;
 import core.cc.attributes.SecurityAttribute;
 
 public class CCAsset extends Asset {
+	
+	String type = "";
 
 	public CCAsset(String id) {
 		super(id);
@@ -21,6 +23,10 @@ public class CCAsset extends Asset {
 	@SuppressWarnings("unchecked")
 	public ArrayList<SecurityAttribute> getListOfSecurityAttribute() {
 		return (ArrayList<SecurityAttribute>) listOfSecurityAttribute.clone();
+	}
+
+	public Object getType() {
+		return type;
 	} 
 	
 	

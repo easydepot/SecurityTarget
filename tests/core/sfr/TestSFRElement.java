@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
+import core.printing.BasicElement;
+import core.printing.Sequence;
 import core.printing.SimpleText;
 import core.sfr.SFRElement;
 import core.sfr.SFRElementAssignement;
@@ -19,6 +21,29 @@ public class TestSFRElement {
 		 given_a_SFR_element();
 		when_adding_a_text_content();
 		assertTrue(sut.hasContent());
+	}
+	
+	@Test
+	public void test_that_by_default_a_sfr_is_not_refined() {
+		 given_a_SFR_element();
+		assertTrue(sut.isNotRefined());
+	}
+	
+	@Test
+	public void test_that_a_sfr_is_refined_when_a_refined_has_been_set() {
+		 given_a_SFR_element();
+
+		sut.setRefinement("refinement");
+		assertFalse(sut.isNotRefined());
+	}
+	
+	@Test
+	public void test_getRefinement_returns_the_refined_value_when_defined() {
+		 given_a_SFR_element();
+
+		sut.setRefinement("refinement");
+		SimpleText result = (SimpleText) sut.getRefinement();
+		assertEquals("refinement",result.getText());
 	}
 
 	
@@ -39,14 +64,16 @@ public class TestSFRElement {
 	@Test
 	public void test_that_getContent_return_empty_String() throws Exception {
 		 given_a_SFR_element();
-		assertEquals("",sut.getContent());
+		Sequence content = (Sequence) sut.getContent();
+		assertNotNull(content);
+		assertTrue(content.isEmpty());
 	}
 	
 	@Test
 	public void test_that_getContent_return_added_elements() throws Exception {
 		 given_a_SFR_element();
 		when_adding_a_text_content();
-		assertEquals("content",((SimpleText)sut.getContent()).getText());
+		assertEquals("content",((Sequence)sut.getContent()).getText());
 	}
 	
 	@Test
@@ -54,7 +81,7 @@ public class TestSFRElement {
 		 given_a_SFR_element();
 		when_adding_a_text_content();
 		sut.addContent(" and another content");
-		assertEquals("content and another content",sut.getContent());
+		assertEquals("content and another content",((Sequence)sut.getContent()).getText());
 	}
 	
 	@Test
@@ -63,7 +90,7 @@ public class TestSFRElement {
 		when_adding_a_text_content();
 		sut.addNewAssignement();
 		sut.addContent(" and another content");
-		assertEquals("content[assignement] and another content",sut.getContent());
+		assertEquals("content[assignement] and another content",((Sequence)sut.getContent()).getText());
 	}
 	
 	@Test
@@ -71,7 +98,7 @@ public class TestSFRElement {
 		 given_a_SFR_element();
 		sut.addNewAssignement();
 		sut.addNewAssignement();
-		assertEquals("[assignement][assignement]",sut.getContent());
+		assertEquals("[assignement][assignement]",((Sequence)sut.getContent()).getText());
 	}
 	
 	@Test

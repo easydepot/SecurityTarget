@@ -8,6 +8,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import core.printing.SimpleText;
 import core.sfr.SFR;
 import core.sfr.SFRElement;
 import core.sfr.SFRElementAssignement;
@@ -16,10 +17,23 @@ public class TestsFR {
 
 	@Test
 	public void testGetIdent1() {
-		SFR sfr = new SFR("FMT_MTD.1",null,"Management Management of TSF data");
+		SFR sfr = givenASFR();
 		Assert.assertEquals("FMT_MTD.1", sfr.getFullIdent());
 
 	}
+	
+	SFR sfr;
+	
+	
+
+
+	private SFR givenASFR() {
+	    sfr = new SFR("FMT_MTD.1",null,"Management Management of TSF data");
+		return sfr;
+	}
+	
+	
+	
 	
 	
 	@Test

@@ -103,7 +103,7 @@ public class SecurityProblemePrinter {
 	private void addThreatDescription() throws Exception {
 		   for (Threat threat: this.getProject().getListeMenaceBienEssentiel()){
 			   if (threat.isEnabled()){
-			   result.addSection("T." + threat.getId());
+			   result.addSection(threat.getFullId());
 			   result.add(threat.getDescription());
 			   result.newLine();
 			   result.newLine();

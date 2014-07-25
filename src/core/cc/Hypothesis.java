@@ -9,4 +9,10 @@ public class Hypothesis extends RiskAnalysisObject {
 	
 	}
 
+	@Override
+	public String getFullId() {
+		// TODO Auto-generated method stub
+		return "H."+id;
+	}
+
 }

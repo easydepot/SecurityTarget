@@ -10,13 +10,17 @@ import org.xml.sax.SAXException;
 import core.printing.BasicElement;
 import core.printing.list.ListItem;
 import core.sfr.SFR;
+import core.sfr.SFRElement;
 import core.sfr.SFRPart;
 
 import core.RiskAnalysis;
 import core.RiskAnalysisObject;
 import core.asset.Asset;
 import core.asset.CCAsset;
+import core.asset.CCObject;
 import core.asset.Functionnality;
+import core.asset.Operation;
+import core.asset.Subject;
 import core.catalog.CCFileParser;
 import core.coverageTable.CoverageTable;
 import core.securityObjective.SecurityObjective;
@@ -35,7 +39,36 @@ public class SecurityTarget extends RiskAnalysis {
 	ArrayList<SecurityObjective> EnvironementSecurityObjective = new ArrayList<SecurityObjective>();
 	ArrayList<TermAndDefinition> TermAndDefinitionList = new ArrayList<TermAndDefinition> ();
 	ArrayList<OSP> listOfOSP = new ArrayList<OSP>();
+	ArrayList<Operation> listOfOperation = new ArrayList<Operation>();
+	ArrayList<CCObject> listOfObject = new ArrayList<CCObject>();
+
 	
+	public boolean add(CCObject arg0) {
+		return listOfObject.add(arg0);
+	}
+
+	public ArrayList<CCObject> getListOfObject() {
+		return listOfObject;
+	}
+	
+	public CCObject findCCObjectByIdent(String id) throws Exception{
+		for (CCObject c : this.getListOfObject()){
+			if (c.getId().contentEquals(id)){
+				return c;
+			}
+		}
+		throw new Exception("Error Object not found :ident "+id);
+		
+	}
+
+	public boolean add(Operation arg0) {
+		return listOfOperation.add(arg0);
+	}
+
+	public ArrayList<Operation> getListOfOperation() {
+		return listOfOperation;
+	}
+
 	CoverageTable assetAgainstThreat = new CoverageTable();
 	CoverageTable threatAgainstObjectives = new CoverageTable();
 	CoverageTable OSPAgainstObjectives = new CoverageTable();
@@ -390,6 +423,29 @@ public void setAssignementContent(int j, BasicElement content) {
 public void selectSFR(String identifier) throws Exception {
 	String[] s = identifier.split("/");
 	this.selectSFR(s[0], s[1]);
+	
+}
+
+public ArrayList<Subject> getListOfSubject() {
+	
+	ArrayList<Subject> result = new ArrayList<Subject>();
+	for (Asset e: this.getListeBienSupport()){
+		if (((CCAsset) e).getType().equals("Subject")){
+			
+		}
+	}
+	return result;
+}
+
+public void setRefinementToSFRElement(int i, String refinement) {
+	SFRElement e = this.mySFR.getListOfSFRElement().get(i-1);
+	e.setRefinement(refinement);
+	
+}
+
+public void setRefinementToSFRElement(int i, BasicElement refinement) {
+	SFRElement e = this.mySFR.getListOfSFRElement().get(i-1);
+	e.setRefinement(refinement);
 	
 }
 

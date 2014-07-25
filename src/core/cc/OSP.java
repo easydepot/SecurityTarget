@@ -13,6 +13,11 @@ public class OSP extends RiskAnalysisObject{
 		
 		return this.getDescription()!=null;
 	}
+
+	@Override
+	public String getFullId() {
+		return "OSP."+this.getId();
+	}
   
   
 }

@@ -19,6 +19,9 @@ import java.util.ArrayList;
 
 import core.RiskAnalysisObject;
 import core.asset.CCAsset;
+import core.asset.CCObject;
+import core.asset.Operation;
+import core.asset.Subject;
 import core.cc.SecurityTarget;
 import core.cc.TermAndDefinition;
 import core.cc.attributes.SecurityAttribute;
@@ -130,10 +133,26 @@ public class SecurityTargetPrinter extends RiskAnalysisPrinter {
 		result.addText("This section describes the operations and requirements that a TOE shall fulfil in order to be compliant to this PP");
 		result.addSection("Introduction");
 		result.addSection("Subjects Objects and security attributes");
-		addSubjectAttributesSection();
+		addSubjectSection();
+		addObjectSection();
+		result.addSection("Operations");
+		result.addText("We define the following operations:");
+		ListItem l = result.addListItem();
+		for (Operation op : this.getProject().getListOfOperation()){
+			l.addItem("OP." + op.getId() + ": " + op.getName());
+		}
+		result.pop();
+		//
+		//result.pop();
+		addSecurityAttributesSection();
+
+		
+
+
+		//addSubjectAttributesSection();
 		
 		
-		addObjectAttributesSection();
+		//addObjectAttributesSection();
 		result.pop();
 		result.pop();
 		result.addSection("SFRs");
@@ -148,9 +167,85 @@ public class SecurityTargetPrinter extends RiskAnalysisPrinter {
 
 
 
+	private void addSecurityAttributesSection() throws Exception {
+		result.addSection("Security Attributes");
+		result.addText("For each Object, we defined a list of Security Attributes");
+		for (CCObject e: this.getProject().getListOfObject()){
+			addSectionDescribingTheSecurityAttributeOfTheObject(e);
+		}
+		result.pop();
+	}
+
+
+
+
+	private void addSectionDescribingTheSecurityAttributeOfTheObject(CCObject e)
+			throws Exception {
+		result.addSection(e.getFullId());
+		addItemListofAllSecurityAttributeOfTheObject(e);
+		result.pop();
+	}
+
+
+
+
+	private void addItemListofAllSecurityAttributeOfTheObject(CCObject e)
+			throws Exception {
+		ListItem l2  =result.addListItem();
+		for (SecurityAttribute at: e.getListOfSecurityAttribute()){
+		  addAttributeFullIdAndDescriptionToListItem(l2, at);
+		}
+	}
+
+
+
+
+	private void addAttributeFullIdAndDescriptionToListItem(ListItem l2,
+			SecurityAttribute at) throws Exception {
+		l2.addItem(getSecurityAttributeFullIdAndDescription(at));
+	}
+
+
+
+
+	private String getSecurityAttributeFullIdAndDescription(SecurityAttribute at) {
+		return at.getFullId()+ ": " + at.getDescription();
+	}
+
+
+
+
+	private void addObjectSection() throws Exception {
+		result.addSection("Objects");
+		result.addText("We define the following list of objects");
+		ListItem l = result.addListItem();
+		for (CCObject e: this.getProject().getListOfObject()){
+			l.addItem("OB." + e.getId() + ": " );
+			l.continueItem(e.getDescription());
+		}
+		result.pop();
+	}
+
+
+
+
+	private void addSubjectSection() throws Exception {
+		result.addSection("Subject");
+		result.addText("We define the following Subjects");
+		ListItem l = result.addListItem();
+		for (CCAsset s:  this.getProject().getRoles()){
+			l.addItem("S."+ s.getId() + ":" + s.getName());
+		}
+		result.pop();
+	}
+
+
+
+
 	private void printSFRDescription(SFR sfr) throws Exception {
 		result.addSection(sfr.getInstanciedIdent());
 		addAllSFRElementSectionOfAGivenSFR(sfr);
+		
 		result.pop();
 	}
 
@@ -160,6 +255,11 @@ public class SecurityTargetPrinter extends RiskAnalysisPrinter {
 	private void addAllSFRElementSectionOfAGivenSFR(SFR sfr) throws Exception {
 		for (SFRElement e:sfr.getListOfSFRElement()){
 			addSFRElementSection(e);
+			if (!e.isNotRefined()){
+				result.addSection("Refinement");
+				result.add(e.getRefinement());
+				result.pop();
+			}
 		
 		}
 	}

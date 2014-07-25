@@ -20,7 +20,7 @@ public class SFRPart {
 	
 	public boolean contains(String sfrIdent){
 		for (SFR sfr:this.listOfTOESFR){
-			if (sfr.getIdent().contentEquals(sfrIdent)){
+			if (sfr.getIdent().contentEquals(sfrIdent.toUpperCase())){
 				return true;
 			}}
 		return false;

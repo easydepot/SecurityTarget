@@ -7,6 +7,7 @@ import org.junit.Test;
 
 public class TestSFRPart {
 	
+	private static final String FDP_ETC_1 = "FDP_ETC.1";
 	SFRPart sut;
 	SFR result;
 	
@@ -16,7 +17,7 @@ public class TestSFRPart {
 		givenASFRPart();
 		when_adding_a_sfr_from_the_catalog();
 		result = sut.findSFRbyID("fdp_etc.1",null);
-		assertEquals("fdp_etc.1",result.ident);
+		assertEquals(FDP_ETC_1,result.ident);
 	}
 	
 	@Test
@@ -25,7 +26,7 @@ public class TestSFRPart {
 		givenASFRPart();
 		when_adding_a_sfr_from_the_catalog_with_an_instance();
 		result = sut.findSFRbyID("fdp_etc.1","instance");
-		assertEquals("fdp_etc.1",result.ident);
+		assertEquals(FDP_ETC_1,result.ident);
 	}
 
 	private void when_adding_a_sfr_from_the_catalog() throws Exception {
@@ -55,9 +56,9 @@ public class TestSFRPart {
 	public void test_contains_return_true_when_the_sfr_has_been_added() throws Exception {
 		givenASFRPart();
 		givenAnSFRCatalog();
-		givenASFRPart();
 		when_adding_a_sfr_from_the_catalog();
-		assertTrue(sut.contains("fdp_etc.1"));
+		assertEquals(1,sut.getListOfTOESFR().size());
+		assertTrue(sut.contains("FDP_ETC.1"));
 		
 	}
 	

@@ -232,7 +232,7 @@ public class TestSecurityTargetPrinter {
 	private TablePrinter prepare_addAssetLine_test_with_one_attribute() throws Exception {
 		TablePrinter table = new TablePrinter();
 		CCAsset asset = new CCAsset("id");
-		SecurityAttribute att = new SecurityAttribute();
+		SecurityAttribute att = new SecurityAttribute("att_id");
 		asset.addSecurityAttribute(att);
 		att.setId("auth");
 		att.getListOfPossibleValue().add("yes");
@@ -245,13 +245,13 @@ public class TestSecurityTargetPrinter {
 	private TablePrinter prepare_addAssetLine_test_with_several_attributes() throws Exception {
 		TablePrinter table = new TablePrinter();
 		CCAsset asset = new CCAsset("id");
-		SecurityAttribute att = new SecurityAttribute();
+		SecurityAttribute att = new SecurityAttribute("att_id");
 		asset.addSecurityAttribute(att);
 		att.setId("auth");
 		att.getListOfPossibleValue().add("yes");
 		att.getListOfPossibleValue().add("no");
 		att.setInitialValue("no");
-		SecurityAttribute att2 = new SecurityAttribute();
+		SecurityAttribute att2 = new SecurityAttribute("att_id");
 		asset.addSecurityAttribute(att2);
 		att2.setId("attr2");
 		att2.getListOfPossibleValue().add("null");

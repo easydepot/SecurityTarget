@@ -4,10 +4,13 @@ import java.util.ArrayList;
 
 import core.printing.BasicElement;
 import core.printing.Sequence;
+import core.printing.SimpleText;
 
 public class SFRElement {
 	
-	
+	  BasicElement refinement;
+
+	  
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
 		SFRElement cloned = new SFRElement(this.ident);
@@ -71,6 +74,25 @@ public class SFRElement {
 			}
 		}
 		return true;		
+	}
+	
+	public boolean isNotRefined() {
+		if (this.refinement!=null){
+			return false;
+		}
+		return true;
+	}
+
+	public void setRefinement(String refinement) {
+	   this.refinement = new SimpleText(refinement);	
+	}
+	
+	public void setRefinement(BasicElement refinement) {
+		   this.refinement = refinement;	
+		}
+
+	public BasicElement getRefinement() {	
+		return refinement;
 	}
 
 	
