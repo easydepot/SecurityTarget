@@ -10,8 +10,12 @@ public class SFR {
   String ident;
   String name;
   String instance;
+  SFRDependencyList dependencies = new SFRDependencyList();
   
-  
+  public SFRDependencyList getListOfUncoveredDependencies() {
+		return this.dependencies.getListOfUncoveredDependencies();
+		
+	}
   
   public static ArrayList<SFR> listOfSFR = new ArrayList<SFR>();
   
@@ -128,6 +132,15 @@ public ArrayList<SFRElementAssignement> getListOfAssignement() {
 		list.addAll(e.getListOfAssigment());
 	}
 	return list;
+}
+
+public SFRDependencyList getListOfDependancies() {
+	return dependencies;
+}
+
+public void addSFRDependency(String SFR_Family_ID) {
+	this.dependencies.add(new SFRDependency(SFR_Family_ID));
+	
 }
 
 

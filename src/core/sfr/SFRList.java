@@ -18,4 +18,13 @@ public class SFRList extends ArrayList<SFR>{
 		return result;
 	}
 
+	public SFRDependencyList getListOfUncoveredDependency() {
+		SFRDependencyList result = new SFRDependencyList();
+		for (SFR sfr: this){
+			result.addAll(sfr.getListOfUncoveredDependencies());
+		}
+		return result;
+		
+	}
+
 }
