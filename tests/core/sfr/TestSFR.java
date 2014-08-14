@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 
+import core.securityObjective.SecurityObjective;
 import core.sfr.SFR;
 import core.sfr.SFRElement;
 import core.sfr.SFRElementAssignement;
@@ -44,6 +45,48 @@ public class TestSFR {
 		when_asking_for_dependances();
 		assert_that_returned_dependancy_list_is_not_null();
 		
+	}
+	
+	@Test
+	public void testGetListOfCoveredObjective_returns_an_empty_list_of_objective_by_default() {
+		givenASFR();
+		assertNotNull(this.sfr.getListOfCoveredObjectives());
+		assertTrue(this.sfr.getListOfCoveredObjectives().isEmpty());
+	}
+	SecurityObjective obj;
+	
+	@Test
+	public void testGetListOfCoveredObjective_returns_an_non_empty_list_after_adding_objectives() {
+		givenASFR();
+		given_a_security_objective();
+		when_covering_the_objective();
+		assertNotNull(this.sfr.getListOfCoveredObjectives());
+		assertFalse(this.sfr.getListOfCoveredObjectives().isEmpty());
+		assertEquals(obj,sfr.getListOfCoveredObjectives().get(0));
+		
+	}
+
+	private void when_covering_the_objective() {
+		sfr.coverSecurityObjective(obj);
+	}
+	
+	@Test
+	public void test_is_covered_return_true_when_the_objective_is_covered_by_the_sfr() {
+		givenASFR();
+		given_a_security_objective();
+		when_covering_the_objective();	
+		assertTrue(sfr.isCovered(obj));
+	}
+	
+	@Test
+	public void test_is_covered_return_false_when_the_objective_is_not_covered_by_the_sfr() {
+		givenASFR();
+		given_a_security_objective();
+		assertFalse(sfr.isCovered(obj));
+	}
+
+	private void given_a_security_objective() {
+		obj = new SecurityObjective("id_security_objective");
 	}
 	
 	@Test
