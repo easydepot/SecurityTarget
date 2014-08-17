@@ -28,7 +28,7 @@ public class CCFileParser extends DefaultHandler{
 		SAXParser parseur = fabrique.newSAXParser();
 		CCFileParser handler = new CCFileParser();
 
-		File fichier = new File("res/cc.xml");
+		File fichier = new File("res/cc3R4.xml");
 		parseur.parse(fichier, handler);
 	}
 	
@@ -39,6 +39,11 @@ public class CCFileParser extends DefaultHandler{
 			currentSFR = SFR.addNewSFR(attributes.getValue("id"));
 			currentSFR.setName(attributes.getValue("name"));
 		}
+		if(qName.equals("fco-dependsoncomponent")){
+			currentSFR.addSFRDependency(attributes.getValue("fcomponent"));
+
+		}
+		//<fco-dependsoncomponent fcomponent="fmt_mof.1"/>
 		if(qName.equals("f-element")){
 			currentSFRElement = new SFRElement(attributes.getValue("id"));
 			currentSFR.addSFRElement(currentSFRElement);

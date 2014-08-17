@@ -1,9 +1,11 @@
 package core.sfr;
 
+
 import java.util.ArrayList;
 
 import core.printing.BasicElement;
 import core.printing.SimpleText;
+
 
 public class SFR {
   String family;
@@ -11,16 +13,16 @@ public class SFR {
   String name;
   String instance;
   SFRDependencyList dependencies = new SFRDependencyList();
+  public static ArrayList<SFR> listOfSFR = new ArrayList<SFR>();
+  ArrayList<SFRElement> listOfSFRElement = new ArrayList<SFRElement>();
+
   
   public SFRDependencyList getListOfUncoveredDependencies() {
 		return this.dependencies.getListOfUncoveredDependencies();
 		
 	}
   
-  public static ArrayList<SFR> listOfSFR = new ArrayList<SFR>();
   
-  ArrayList<SFRElement> listOfSFRElement = new ArrayList<SFRElement>();
-
   
   
   public ArrayList<SFRElement> getListOfSFRElement() {
@@ -35,9 +37,11 @@ public class SFR {
 protected Object clone() throws CloneNotSupportedException {
 	SFR cloned = new SFR(this.getIdent());
 	cloned.setName(this.getName());
+	cloned.family = this.family;
 	for (SFRElement e: this.getListOfSFRElement()){
 	  cloned.addSFRElement((SFRElement) e.clone());
 	}
+	cloned.dependencies = (SFRDependencyList) this.dependencies.clone();
 	return cloned;
 }
 
@@ -59,7 +63,7 @@ public static SFR getNewSFRInstance(String id) throws Exception{
 	throw new Exception("SFR "+ id + " not found");
 }
 
-  String getInstance() {
+  public String getInstance() {
 	return instance;
 }
 
@@ -76,7 +80,7 @@ public static SFR addNewSFR(String id){
 public SFR(String family, String ident, String name) {
 	super();
 	this.family = family;
-	this.ident = ident;
+	this.ident = ident.toUpperCase();
 	this.name = name;
 }
 public SFR(String id) {
@@ -89,12 +93,7 @@ public void setFamily(String family) {
 	this.family = family;
 }
 public String getFullIdent() {
-	if (ident!=null){
-	  return family.toUpperCase() +"/"+ ident;
-	}
-	else {
-		return family.toUpperCase();
-	}
+	return getInstanciedIdent();
 }
 
 public String getInstanciedIdent() {
@@ -141,6 +140,20 @@ public SFRDependencyList getListOfDependancies() {
 public void addSFRDependency(String SFR_Family_ID) {
 	this.dependencies.add(new SFRDependency(SFR_Family_ID));
 	
+}
+
+
+
+
+public boolean hasAllDependenciesCovered() {
+	return this.getListOfUncoveredDependencies().isEmpty();
+}
+
+
+
+
+public boolean isInstanciated() {
+	return this.instance!=null;
 }
 
 
