@@ -84,7 +84,7 @@ public class SecurityTargetPrinter extends RiskAnalysisPrinter {
 					   for (SFRElement e: sfr.getListOfSFRElement()){
 						   if (!e.isAssigned()){
 						     System.out.print("- " + e.getIdent() + "  ");
-						     System.out.print(e.getContent().getText());
+						     //System.out.print(e.getContent().getText());
 						     System.out.println();
 						   }
 						   

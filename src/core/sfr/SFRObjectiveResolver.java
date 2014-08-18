@@ -23,6 +23,14 @@ public class SFRObjectiveResolver {
 			
 		}
 		return result;
+	}
+	
+	
+
+	public void cover(String objectiveIdent, String sfrIdent) throws Exception {
+		SecurityObjective obj = listObObjectives.findByIdent(objectiveIdent);
+		SFR sfr = this.sfrpart.findSFRbyID(sfrIdent);
+		sfr.coverSecurityObjective(obj);
 		
 	}
 	

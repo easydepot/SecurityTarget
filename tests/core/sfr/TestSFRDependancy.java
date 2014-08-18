@@ -16,6 +16,13 @@ public class TestSFRDependancy {
 		given_a_SFRDependency();
 		assert_that_getFamily_returns_the_ID_given_within_the_constructor();
 	}
+	
+
+	@Test
+	public void test_that_SFRDependancy_return_by_default_an_empty_SFR_list() {
+		given_a_SFRDependency();
+		assertTrue(sut.getCoveringSFRs().isEmpty());
+	}
 
 	
 	
@@ -32,6 +39,15 @@ public class TestSFRDependancy {
 		given_a_SFRDependency();
 		when_adding_a_SFR_to_cover_the_dependancy();
 		assert_that_dependency_is_covered();
+	}
+	
+	@Test
+	public void test_that_SFRDependancy_ignore_when_already_covered() throws Exception {
+		given_a_SFRDependency();
+		when_adding_a_SFR_to_cover_the_dependancy();
+		when_adding_a_SFR_to_cover_the_dependancy();
+		assertEquals(1,sut.getCoveringSFRs().size());
+
 	}
 
 

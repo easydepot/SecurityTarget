@@ -12,7 +12,6 @@ import core.printing.list.ListItem;
 import core.sfr.SFR;
 import core.sfr.SFRElement;
 import core.sfr.SFRPart;
-
 import core.RiskAnalysis;
 import core.RiskAnalysisObject;
 import core.asset.Asset;
@@ -24,6 +23,7 @@ import core.asset.Subject;
 import core.catalog.CCFileParser;
 import core.coverageTable.CoverageTable;
 import core.securityObjective.SecurityObjective;
+import core.securityObjective.SecurityObjectiveList;
 import core.threat.Threat;
 
 public class SecurityTarget extends RiskAnalysis {
@@ -35,7 +35,7 @@ public class SecurityTarget extends RiskAnalysis {
 	
 	
 	
-	ArrayList<SecurityObjective> toeSecurityObjectives = new ArrayList<SecurityObjective>();
+	SecurityObjectiveList toeSecurityObjectives = new SecurityObjectiveList();
 	ArrayList<SecurityObjective> EnvironementSecurityObjective = new ArrayList<SecurityObjective>();
 	ArrayList<TermAndDefinition> TermAndDefinitionList = new ArrayList<TermAndDefinition> ();
 	ArrayList<OSP> listOfOSP = new ArrayList<OSP>();
@@ -177,7 +177,7 @@ public class SecurityTarget extends RiskAnalysis {
 	}
 
 	
-	public ArrayList<SecurityObjective> getSecurityObjective() {
+	public SecurityObjectiveList getSecurityObjective() {
 		return toeSecurityObjectives;
 	}
 

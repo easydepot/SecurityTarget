@@ -5,6 +5,17 @@ import java.util.ArrayList;
 public class SFRList extends ArrayList<SFR>{
 
 	
+	
+	public boolean contains(SFR sfr) {
+		for (SFR mysfr:this){
+			if (sfr.getFullIdent().contentEquals(mysfr.getFullIdent())){
+				return true;
+			}
+		}
+		return false;
+		
+	}
+
 	/**
 	 * 
 	 */

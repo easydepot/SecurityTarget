@@ -2,6 +2,8 @@ package core.sfr;
 
 import java.util.ArrayList;
 
+import core.securityObjective.SecurityObjective;
+
 public class SFRPart {
 	SFRList listOfTOESFR = new SFRList();
 
@@ -34,6 +36,26 @@ public class SFRPart {
 			throws Exception {
 		listOfTOESFR.add(SFR.getNewSFRInstance(id,instance_name));
 	}
+	
+	public SFR findSFRbyID(String fullident) throws Exception {
+		String[] s = fullident.split("/");
+		if (s.length == 1){
+			return findSFRbyID(s[0],null);
+		} else {
+		  return findSFRbyID(s[0],s[1]);
+		}
+	}
+	
+	public SFRList getListOnNoneAttachedSFR(){
+		SFRList result = new SFRList();
+		for (SFR sfr : this.getListOfTOESFR()){
+			if (sfr.getListOfCoveredObjectives().isEmpty()){
+				result.add(sfr);
+			}
+		}
+		return result;
+	}
+
 
 	public SFR findSFRbyID(String ident, String instance) throws Exception {
 		for (SFR sfr:this.listOfTOESFR){
@@ -50,6 +72,16 @@ public class SFRPart {
 		}
 		throw new Exception("SFR " + ident +"/" + instance+ " not found");
 		
+	}
+
+	public SFRList getListOfSFRcovering(SecurityObjective obj) {
+		SFRList result = new SFRList();
+		for (SFR sfr: this.listOfTOESFR){
+			if (sfr.isCovered(obj)){
+				result.add(sfr);
+			}
+		}
+		return result;
 	}
 	
 
