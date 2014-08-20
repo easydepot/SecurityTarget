@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import core.printing.BasicElement;
 import core.printing.SimpleText;
+import core.securityObjective.SecurityObjective;
+import core.securityObjective.SecurityObjectiveList;
 
 
 public class SFR {
@@ -13,9 +15,11 @@ public class SFR {
   String name;
   String instance;
   SFRDependencyList dependencies = new SFRDependencyList();
+
+  SecurityObjectiveList listOfCoveredSecurityObjectives = new SecurityObjectiveList();
+
   public static ArrayList<SFR> listOfSFR = new ArrayList<SFR>();
   ArrayList<SFRElement> listOfSFRElement = new ArrayList<SFRElement>();
-
   
   public SFRDependencyList getListOfUncoveredDependencies() {
 		return this.dependencies.getListOfUncoveredDependencies();
@@ -140,6 +144,20 @@ public SFRDependencyList getListOfDependancies() {
 public void addSFRDependency(String SFR_Family_ID) {
 	this.dependencies.add(new SFRDependency(SFR_Family_ID));
 	
+}
+
+public SecurityObjectiveList getListOfCoveredObjectives() {
+	return listOfCoveredSecurityObjectives;
+	
+}
+
+public void coverSecurityObjective(SecurityObjective obj) {
+	this.listOfCoveredSecurityObjectives.add(obj);
+	
+}
+
+public boolean isCovered(SecurityObjective obj) {
+	return this.listOfCoveredSecurityObjectives.contains(obj);
 }
 
 
